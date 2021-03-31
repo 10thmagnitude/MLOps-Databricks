@@ -267,7 +267,7 @@ jobs:
         name: model_image_id
         path: image.json
   staging:
-    if: env.DEPLOY_IMAGE
+    if: ${DEPLOY_IMAGE}
     needs: train
     runs-on: ubuntu-18.04
     env:
@@ -399,7 +399,7 @@ jobs:
           exit 1
         fi
   production:
-    if: env.DEPLOY_IMAGE
+    if: ${DEPLOY_IMAGE}
     needs: [train, staging]
     runs-on: ubuntu-18.04
     env:

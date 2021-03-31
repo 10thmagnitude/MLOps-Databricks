@@ -222,7 +222,7 @@ jobs:
           exit 1
         fi
     - name: Build Container Image
-      if: env.DEPLOY_IMAGE
+      if: env.DEPLOY_IMAGE == true
       run: |    
         JSON=`cat << EOM
         {

@@ -271,10 +271,7 @@ jobs:
     needs: train
     runs-on: ubuntu-18.04
     env:
-      DATABRICKS_HOST: ${{ env.DATABRICKS_HOST }}
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-      DATABRICKS_NOTEBOOK_PATH: ${{ env.DATABRICKS_NOTEBOOK_PATH }}
-      DATABRICKS_CLUSTER_NAME: ${{ env.DATABRICKS_CLUSTER_NAME }}
       DATABRICKS_JOB_DEPLOYTOACI_NAME: Wine Quality (Deploy To ACI)
     steps:
     - name: Download Model Image ID
@@ -406,10 +403,7 @@ jobs:
     needs: [train, staging]
     runs-on: ubuntu-18.04
     env:
-      DATABRICKS_HOST: ${{ env.DATABRICKS_HOST }}
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-      DATABRICKS_NOTEBOOK_PATH: ${{ env.DATABRICKS_NOTEBOOK_PATH }}
-      DATABRICKS_CLUSTER_NAME: ${{ env.DATABRICKS_CLUSTER_NAME }}
       DATABRICKS_JOB_DEPLOYTOACI_NAME: Wine Quality (Deploy To ACI)
     steps:
     - name: Download Model Image ID

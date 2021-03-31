@@ -265,6 +265,7 @@ jobs:
           exit 1
         fi
     - name: Upload Model Image ID
+      if: env.DEPLOY_IMAGE == true
       uses: actions/upload-artifact@v1
       with:
         name: model_image_id

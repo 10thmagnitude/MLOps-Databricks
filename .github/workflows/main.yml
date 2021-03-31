@@ -6,24 +6,25 @@ on:
     branches:    
       - master
 
+env:
+  DATABRICKS_HOST: https://adb-264909025085069.9.azuredatabricks.net
+  DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+  DATABRICKS_NOTEBOOK_PATH: /Shared/MLFlow
+  DATABRICKS_CLUSTER_NAME: mlflowCluster
+  DATABRICKS_CLUSTER_SPARK_VERSION: 8.0.x-scala2.12
+  DATABRICKS_CLUSTER_NODE_TYPE_ID: Standard_DS3_v2
+  DATABRICKS_CLUSTER_DRIVER_NODE_TYPE_ID: Standard_DS3_v2
+  DATABRICKS_CLUSTER_AUTOTERMINATION_MINUTES: 15
+  DATABRICKS_CLUSTER_WORKERS_MIN: 1
+  DATABRICKS_CLUSTER_WORKERS_MAX: 2
+  DEPLOY_IMAGE: false
+  AZUREML_SDK: azureml-sdk[databricks]==1.23.0
+  DATABRICKS_JOB_TRAIN_NAME: Wine Quality (Train)
+  DATABRICKS_JOB_BUILDIMAGE_NAME: Wine Quality (Build Container Image)
+
 jobs:
   train:
     runs-on: ubuntu-18.04
-    env:
-      DATABRICKS_HOST: https://adb-264909025085069.9.azuredatabricks.net
-      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-      DATABRICKS_NOTEBOOK_PATH: /Shared/MLFlow
-      DATABRICKS_CLUSTER_NAME: mlflowCluster
-      DATABRICKS_CLUSTER_SPARK_VERSION: 8.0.x-scala2.12
-      DATABRICKS_CLUSTER_NODE_TYPE_ID: Standard_DS3_v2
-      DATABRICKS_CLUSTER_DRIVER_NODE_TYPE_ID: Standard_DS3_v2
-      DATABRICKS_CLUSTER_AUTOTERMINATION_MINUTES: 15
-      DATABRICKS_CLUSTER_WORKERS_MIN: 1
-      DATABRICKS_CLUSTER_WORKERS_MAX: 2
-      DEPLOY_IMAGE: false
-      AZUREML_SDK: azureml-sdk[databricks]==1.23.0
-      DATABRICKS_JOB_TRAIN_NAME: Wine Quality (Train)
-      DATABRICKS_JOB_BUILDIMAGE_NAME: Wine Quality (Build Container Image)
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python 3.6

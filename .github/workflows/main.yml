@@ -398,7 +398,7 @@ jobs:
           exit 1
         fi
   production:
-    if: ${{ DEPLOY_IMAGE }} == true
+    if: DEPLOY_IMAGE == true
     needs: [train, staging]
     runs-on: ubuntu-18.04
     env:

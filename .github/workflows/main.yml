@@ -19,6 +19,7 @@ jobs:
       DATABRICKS_CLUSTER_AUTOTERMINATION_MINUTES: 15
       DATABRICKS_CLUSTER_WORKERS_MIN: 1
       DATABRICKS_CLUSTER_WORKERS_MAX: 2
+      DEPLOY_IMAGE: false
       AZUREML_SDK: azureml-sdk[databricks]==1.23.0
       DATABRICKS_JOB_TRAIN_NAME: Wine Quality (Train)
       DATABRICKS_JOB_BUILDIMAGE_NAME: Wine Quality (Build Container Image)
@@ -264,6 +265,7 @@ jobs:
         name: model_image_id
         path: image.json
   staging:
+    if: ${{ env.DEPLOY_IMAGE }}
     needs: train
     runs-on: ubuntu-18.04
     env:
@@ -398,6 +400,7 @@ jobs:
           exit 1
         fi
   production:
+    if: ${{ env.DEPLOY_IMAGE }}
     needs: [train, staging]
     runs-on: ubuntu-18.04
     env:

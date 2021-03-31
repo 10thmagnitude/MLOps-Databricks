@@ -267,11 +267,10 @@ jobs:
         name: model_image_id
         path: image.json
   staging:
-    if: ${{ env.DEPLOY_IMAGE }}
+    if: DEPLOY_IMAGE == true
     needs: train
     runs-on: ubuntu-18.04
     env:
-      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
       DATABRICKS_JOB_DEPLOYTOACI_NAME: Wine Quality (Deploy To ACI)
     steps:
     - name: Download Model Image ID
@@ -399,11 +398,10 @@ jobs:
           exit 1
         fi
   production:
-    if: ${{ env.DEPLOY_IMAGE }}
+    if: DEPLOY_IMAGE == true
     needs: [train, staging]
     runs-on: ubuntu-18.04
     env:
-      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
       DATABRICKS_JOB_DEPLOYTOACI_NAME: Wine Quality (Deploy To ACI)
     steps:
     - name: Download Model Image ID

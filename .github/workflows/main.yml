@@ -267,7 +267,7 @@ jobs:
         name: model_image_id
         path: image.json
   staging:
-    if: DEPLOY_IMAGE == true
+    if: false
     needs: train
     runs-on: ubuntu-18.04
     env:
@@ -398,7 +398,7 @@ jobs:
           exit 1
         fi
   production:
-    if: DEPLOY_IMAGE == true
+    if: false
     needs: [train, staging]
     runs-on: ubuntu-18.04
     env:

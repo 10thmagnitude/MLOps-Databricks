@@ -222,6 +222,7 @@ jobs:
           exit 1
         fi
     - name: Build Container Image
+      if: env.DEPLOY_IMAGE
       run: |    
         JSON=`cat << EOM
         {
@@ -249,11 +250,11 @@ jobs:
           run_state=$(databricks runs get --run-id $run_id | jq -r ".state.life_cycle_state")
           echo "Run State (ID $run_id): $run_state"
         done
-        echo "Get results"
-        databricks runs get --run-id $run_id
+        run_url=$(databricks runs get --run-id $run_id | jq -r ".run_page_url")
         result_state=$(databricks runs get --run-id $run_id | jq -r ".state.result_state")
         state_message=$(databricks runs get --run-id $run_id | jq -r ".state.state_message")
         echo "Result State (ID $run_id): $result_state, Message: $state_message"
+        echo "Run URL: $run_url"
         
         if [ $result_state == "SUCCESS" ]
         then

@@ -1,9 +1,9 @@
 name: Wine Quality Machine Learning Pipeline
 
-on: [push]
-#  push:
-#    branches:    
-#      - master
+on:
+  push:
+    branches:    
+      - master
 
 jobs:
   train:
@@ -12,13 +12,13 @@ jobs:
       DATABRICKS_HOST: https://westeurope.azuredatabricks.net
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
       DATABRICKS_NOTEBOOK_PATH: /Shared/MLFlow
-      DATABRICKS_CLUSTER_NAME: ML
-      DATABRICKS_CLUSTER_SPARK_VERSION: 7.3.x-cpu-ml-scala2.12
+      DATABRICKS_CLUSTER_NAME: mlflowCluster
+      DATABRICKS_CLUSTER_SPARK_VERSION: 8.0.x-scala2.12
       DATABRICKS_CLUSTER_NODE_TYPE_ID: Standard_DS3_v2
       DATABRICKS_CLUSTER_DRIVER_NODE_TYPE_ID: Standard_DS3_v2
       DATABRICKS_CLUSTER_AUTOTERMINATION_MINUTES: 15
       DATABRICKS_CLUSTER_WORKERS_MIN: 1
-      DATABRICKS_CLUSTER_WORKERS_MAX: 4
+      DATABRICKS_CLUSTER_WORKERS_MAX: 2
       AZUREML_SDK: azureml-sdk[databricks]==1.23.0
       DATABRICKS_JOB_TRAIN_NAME: Wine Quality (Train)
       DATABRICKS_JOB_BUILDIMAGE_NAME: Wine Quality (Build Container Image)
@@ -267,10 +267,10 @@ jobs:
     needs: train
     runs-on: ubuntu-18.04
     env:
-      DATABRICKS_HOST: https://westeurope.azuredatabricks.net
+      DATABRICKS_HOST: ${{ env.DATABRICKS_HOST }}
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-      DATABRICKS_NOTEBOOK_PATH: /Shared/MLFlow
-      DATABRICKS_CLUSTER_NAME: ML
+      DATABRICKS_NOTEBOOK_PATH: ${{ env.DATABRICKS_NOTEBOOK_PATH }}
+      DATABRICKS_CLUSTER_NAME: ${{ env.DATABRICKS_CLUSTER_NAME }}
       DATABRICKS_JOB_DEPLOYTOACI_NAME: Wine Quality (Deploy To ACI)
     steps:
     - name: Download Model Image ID
@@ -401,11 +401,11 @@ jobs:
     needs: [train, staging]
     runs-on: ubuntu-18.04
     env:
-      DATABRICKS_HOST: https://westeurope.azuredatabricks.net
+      DATABRICKS_HOST: ${{ env.DATABRICKS_HOST }}
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-      DATABRICKS_NOTEBOOK_PATH: /Shared/MLFlow
-      DATABRICKS_CLUSTER_NAME: ML
-      DATABRICKS_JOB_DEPLOYTOAKS_NAME: Wine Quality (Deploy To AKS)
+      DATABRICKS_NOTEBOOK_PATH: ${{ env.DATABRICKS_NOTEBOOK_PATH }}
+      DATABRICKS_CLUSTER_NAME: ${{ env.DATABRICKS_CLUSTER_NAME }}
+      DATABRICKS_JOB_DEPLOYTOACI_NAME: Wine Quality (Deploy To ACI)
     steps:
     - name: Download Model Image ID
       uses: actions/download-artifact@v1
